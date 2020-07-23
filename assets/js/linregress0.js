@@ -1,15 +1,17 @@
-// set the dimensions and margins of the graph
-const margin = {top: 0, right: 0, bottom: 10, left: 10},
+function run0(){
+  // set the dimensions and margins of the graph
+var margin = {top: 0, right: 0, bottom: 10, left: 10},
     viewBox = {width: 500, height:300}
     width = viewBox.width - margin.left - margin.right,
     height = viewBox.height - margin.top - margin.bottom;
 
 // animation settings
-const randomization_skew = 50;
-const animationDuration = 1500;
+var randomization_skew = 50,
+    animationDuration = 1500;
 
 drag = d3.drag()
-  .on("drag", click)
+  .on("start", click)
+  .on("drag", plotRandomizedPoints)
   .on("end", dragEnd);
 
 // append the svg object to the body of the page
@@ -44,6 +46,11 @@ svg.append("g")
 
 var circles = [];
 function click(){
+  circles = [];
+  svg.selectAll(".dot").remove();
+  svg.selectAll(".regress_line").remove();
+}
+function plotRandomizedPoints(){
   // Ignore the click event if it was suppressed
   if (d3.event.defaultPrevented) return;
 
@@ -59,31 +66,11 @@ function click(){
   // Extract the click location
   var point = d3.mouse(this)
   , p = {x: point[0]-margin.left, y: point[1] - margin.top };
-  for (var i=0; i<5;i++){
-      randx = math.random(-randomization_skew,randomization_skew);
-      randy = math.random(-randomization_skew,randomization_skew);
-      
-      var n = {x:0, y:0};
 
-      svg.append("circle")
-          .attr("transform", "translate(" + p.x + "," + p.y + ")")
-          .attr("r", "3")
-          .attr("class", "dot")
-          .transition()
-            .duration(animationDuration)
-            .ease(d3.easeBackOut.overshoot(1))
-            .attr("transform", function(d){
-                n.x = p.x + randx;
-                n.y = p.y + randy; 
-                return "translate("+ (n.x) + "," + (n.y) + ")"});
+  scatter(p);
   
-      //Update circles array
-      circles.push(n);
-      console.log(n.x,n.y);
-      }
   }
 function dragEnd(){
-    console.log("Linear Regression BABY!")
     var X = []
     var Y = []
     for (const circle in circles){
@@ -116,5 +103,40 @@ function drawLine(s, b){
         .transition(1000)
           .style("opacity", "1");
   })
+  
 }
-// TODO: Animations need to be elastic. I don't care about computing power
+function scatter(p){
+  for (var i=0; i<5;i++){
+    randx = math.random(-randomization_skew,randomization_skew);
+    randy = math.random(-randomization_skew,randomization_skew);
+    
+    var n = {x:0, y:0};
+
+    svg.append("circle")
+        .attr("transform", "translate(" + p.x + "," + p.y + ")")
+        .attr("r", "3")
+        .attr("class", "dot")
+        .transition()
+          .duration(animationDuration)
+          .ease(d3.easeBackOut.overshoot(1))
+          .attr("transform", function(d){
+              n.x = p.x + randx;
+              n.y = p.y + randy; 
+              return "translate("+ (n.x) + "," + (n.y) + ")"});
+
+    //Update circles array
+    circles.push(n);
+    }
+}
+window.addEventListener('load', async function (){
+  await sleep(1000);
+  var starting_p = {x:50, y:230};
+  for (i=0; i<40; i++){
+    await sleep(30);
+    scatter(starting_p)
+    starting_p = {x:starting_p.x+10, y:starting_p.y-4};
+  }
+  dragEnd();
+});
+}
+run0();

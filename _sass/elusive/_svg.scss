@@ -2,7 +2,46 @@
         opacity: 0.65;}
   .regress_line {stroke: #ff7961;
                 stroke-weight: 1000}
-  .axis {color: grey;}
+  .user_line {stroke: #d0ff61;
+    stroke-width: 0.15em;}
+  .axis {color: grey;
+    cursor: default;}
   .svg-container {
     width: 100%;
+  }
+
+  .user_information_title {
+    fill: #b1ce6f;
+    font-weight: bold;
+    font-size: 0.8em;
+    cursor: default;
+  }
+  .user_information_value {
+    fill: #ddd;
+    font-weight: bold;
+    font-size: 0.8em;
+    cursor: default;
+  }
+  
+  .information_title {
+    fill: #f38a77;
+    font-weight: bold;
+    font-size: 0.8em;
+    cursor: default;
+  }
+  .information_value{
+    fill: #ddd;
+    font-weight: bold;
+    font-size: 0.8em;
+    cursor: default;
+  }
+  .draggable_button {
+    cursor: grab;
+    stroke: #a9db33;
+    stroke-width: 0.15em;
+    fill: #d0ff61;
+    r: 6;
+  }
+  .draggable_button:hover {
+    stroke: #e2ff9e;
   }

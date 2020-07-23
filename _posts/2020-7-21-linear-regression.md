@@ -5,46 +5,60 @@ categories: mathematics statistics
 
 ---
 
-## Objective
+
 Fitting a line to data
 
 <script src="https://d3js.org/d3.v5.min.js"></script>
 <script src="https://unpkg.com/mathjs@7.0.2/dist/math.min.js"></script>
 <div id="linregress"></div>
-<script src="/assets/js/scatter_linregress.js"></script>
+<script src="/assets/js/linregress0.js"></script>
 Go ahead and try to fit a line!
 
+## Motivation
+Looking at the graph above, we see some dots representing data points, two, rather terse, axes, and a line that seems to go across all the dots. 
+
+
+We see this sort of graph all the time. For instance, house prices increase as square-footage increases. Gas consumption increases as we drive more, and so on. But these relationships are never perfect in the real world.
+
+The dots are scattered around like because the data we collect is a function of a plethora of other factors. Take the house prices. They are, indeed, affected by square-footage. But not only that! They are also affected by, for example, the proximity to a beach, how good neighboring schools are, how safe the neighborhood is, and maybe, even, how good of a bargainer the buyer is. And so on, and so forth. That is *noise*. Sometimes, we just want to find out the relationship between square-footage and price to guess the price of a house based on its square-footage.
+
+How do we do that? Simple. We fit a line across the dots, like the one above.
+
+How do we "fit" a line across?
+1. We could eyeball it. 
+2. We could calculate, somehow, how well a certain line fits a certain set of dots. 
+
+Now, the first option seems much easier. And in my experience, humans can eyeball a linear fit pretty well. In fact, at the end of the next section you'll be able to test your skills, as well.
+
+But this approach has some drawbacks. First of all, how do we tell your eyeballing is better than mine? Also, what if we want to get really precise. And, perhaps most pressingly, what happens if we need to fit bazillions lines to different sets of dots. No one would want to eyeball each one of them!
+
+The second option has some extra perks, too. There is a fairly simple rationale behind it and the concepts introduced play fundamental roles in all data analysis, including cutting edge machine learning. So, having an intuitive understanding of these concepts helps.
+
+But, the most important perk of the second option? The result is frickin' beautiful! Let's get to it.
+
 # Setup
-## Measuring **fit**
-Everyone probably has a pretty good understanding idea when it comes to fit. We can easily judge that the line in the right-hand-side graph is a much better fit to the data than its left-hand-side counterpart.  
-[Images here, one with good, the other with bad fit]  
-However as the fit becomes better and better, we end up needing a more rigorous understanding.
+First order of business: I've talked about *how well* a line fits a set of dots. Let's talk about what 'how well' means in this context. In other words, let's talk about the error a line produces given a certain set of dots.
+## Measuring Error
+What is error? Here's a good measure: the difference between the actual house price, $y$, and the estimated price according to the fitted line, $\hat{y}$.
 
-## Error
-What we want to measure when we measure how well a line fits our data is to measure the error. And we want to reduce error as much as possible. What is error? How far off our line is from the actual values (scattered points in our examples above).
+$$Error:=y - \hat{y}.$$
 
-That is, for a singe point $y - \hat{y}$. [This needs to talk to the graph on top of the page]
-
-Great, we have calculated the error for a single point; it's just how far off it fall from actuality.
-
+Great, we have calculated the error for a single point; it's just the verical distance between the fitted line and the actual dot.
+<!-- TODO: I need an image to right showing the difference, here -->
+In what follows, we're going to work on extrapolating this idea for a single point to the whole data set.
 ## Squared Error
-Our ultimate goal is to extend the error that we calculate from all of the single points to the whole line that we're generating. There might be a couple of ways of doing this. However, observe one thing first: If we sum all the errors together, positive errors would cancel out negative errors. An error is an error regardless of its sign. One error shouldn't cancel another!
+Our ultimate goal is to extend the error that we calculate from all of the single points to the whole line that we're generating. There might be a couple of ways of doing this. However, observe one thing first: Some dots are above the fitted line while some are below. If we sum all the errors together, positive errors would cancel out negative errors. An error is an error regardless of its sign. One error shouldn't cancel another!
 
-We could do a couple of things here, one of which, following the tradition, is squaring the errors. Voila! We've gotten rid of the negative signs.
+That needs to be fixed. And, we could do a couple of things here, one of which, following the tradition, is squaring the errors. Voila! We've gotten rid of the negative signs:
 
-$(y-\hat{y})^2$
+$$Squred Error := (y-\hat{y})^2$$
 
 ## Sum of Squared Error (SSE)
 Now we can sum all the squared errors without worrying about errors cancelling each other out.
-
-Let:  
-$Y$: The vector of actual values  
-$\hat{Y}$: The vector of our guesses (predictions, or whatever)
-
-So we have:  
+ 
 $\newcommand\SSE{\mathit{SSE}}$
 
-$$\SSE = \sum_{i=1}^{n}{(Y_i - \hat{Y}_i)^2}$$
+$$\SSE = \sum_{i=1}^{n}{(y_i - \hat{y}_i)^2}$$
 
 
 This is already a pretty good measure of how good the fit is; much better than what we started with.  
@@ -57,79 +71,121 @@ $\newcommand\RMSE{\mathit{RMSE}}$
 
 $$\RMSE = \sqrt{\frac{\SSE}{n}}$$
 
-Okay, so in this setup section we've come up with a rigorous way of evaluating fitness of a line, given some data. Next, we're going to try to identify that line.
+Okay, so in this setup section we've come up with a rigorous way of evaluating fitness of a line for some dots. I want you to note that the most crucial step that we've taken here is the first one where we defined error as the vertical distance between the actual data and the fitted line. The rest is housekeeping. Next, we're going to try to find the *best* possible line that fits a set of dots.
+
+But before we do all that, have a go below, try to fit a line by eyeballing it and then by paying attention to the computed values that we just defined.
+
+<div id="linregress1"></div>
+<script src="/assets/js/linregress1.js"></script>
+<div align=center><i>The left-hand handle modifies the intercept, the right-hand one modifies the slope.</i></div>
 
 # Finding the Best Fit
 
-There are two fundamentally different ways of findding the line that fits our expectations--as outlined above. One is applying brute force. That is, we can approximate that line by trying thousands, even millions of alternatives and calculating the error for each. But, we're going to do that a lot in this series. So for once let's go with the other, much more elegant, alternative.
+*The less the error, the better the fit.  
+The least the error, the best the fit.*
 
-## Precisifying the Problem
-What do we want? We want a line that fits the data (Y) best.  
-What line is that? The one with the least error.  
-Error? Since we're not changing the data let's compare the $\SSE$ of each alternative to others.  
-So we want the line with the least $\SSE$? Yep!
+There are two fundamentally different ways of finding the line that fits the dots--as outlined above. One is applying brute force. We know how to calculate how good a fit our line is. We can get the computer to try thousands of different lines (using clever techniques) to get as good a fit as we can get. This is tantamount to *tweaking* in some sense. And it's exactly what you did if you tried to fit a line to the graph above. And it's fine. In fact, it's what machine learning is: clever tweaks at a *very* large scale!
 
-## A small amount of calculus to the rescue
-We want the line with the least sum of squared errors. In order to do that, we need to find out when the derivative of the SSE formula equals 0.
+Sometimes, though, there is the option for just finding *the* best fitting line.
 
-What was the formula for $\SSE$, again?  
-$\SSE = \sum_{i=1}^{n}{(Y_i - \hat{Y}_i)^2}$  
+*"The"?* Not always an option, but we can, in this case, compute the best fitting line thanks to the magic of calculus.
+
+## A small note, going forward
+The following will be focused on finding the *best* line for a given set of dots. It turns out that trying to minimize $\RMSE$ and $\SSE$ are the same. So I'll minimize $\SSE$ in what follows for simplicity.
+
+*(If you  can't follow the calculus bits below, don't worry at all. Just skip to the end of this section where you'll see a graph where you can compare the line that you fitted to the absolute best one.)*
+
+## Calculus to the rescue
+We want the line with the least sum of squared errors. In order to do that, we need to find out when the derivative of $\SSE$ equals 0, in other words, when the $\SSE$ hits a local *minimum*.
+
+Reminder for $\SSE$:  
+$$\SSE = \sum_{i=1}^{n}{(y_i - \hat{y}_i)^2}$$
 It turns out this is actually a pretty general formula for finding the SSE not just of linear models but all sorts of models. Since we're fitting a linear model, we can be a little bit more specific than this to go ahead with our calculations.  
-In particular, we know that for any $\hat{Y}_i$,  
-$\hat{Y}_i = sX_i + b$
+In particular, since we are fitting a *line* to the whole dataset, we know that for any $\hat{y}_i$,  
+$$\hat{y}_i = sx_i + b$$
 
-After the corresponding substituion, we get:  
-$\SSE = \sum_{i=1}^{n}{(Y_i - sX_i - b)^2}$
+After the corresponding substituion, we get:
+
+$$\SSE = \sum_{i=1}^{n}{(y_i - sx_i - b)^2}$$
 
 Now, we are going to find out the slope (s) and the bias (b) when $\SSE=0$. We're going to do that separately by taking partial derivatives of $\SSE$ with respect to each.
 
 ### Calculating b
-Let's rewrite our formula and equate its derivative to 0.  
-$$0 = \frac{\partial \SSE}{\partial b}\left(\sum_{i=1}^{n}{(Y_i - sX_i - b)^2}\right).$$
+Let's rewrite our formula and equate its derivative to 0.
 
-Using the chain rule, we get:  
-$$0 = \sum_{i=1}^{n}{-2(Y_i - sX_i - b)}.$$
+$$0 = \frac{\partial \SSE}{\partial b}\left(\sum_{i=1}^{n}{(y_i - sx_i - b)^2}\right).$$
 
-Pulling the '$-2$' out, and dividing each side by it:  
-$$0 = \sum_{i=1}^{n}{(Y_i - sX_i - b)},$$
+Using the chain rule, we get:
+
+$$0 = \sum_{i=1}^{n}{-2(y_i - sx_i - b)}.$$
+
+Pulling the '$-2$' out, and dividing each side by it:
+
+$$0 = \sum_{i=1}^{n}{(y_i - sx_i - b)},$$
 
 which evaluates to:
-$$0 = \sum_{i=1}^{n}Y_i - \sum_{i=1}^{n}sX_i - \sum_{i=1}^{n}b.$$
+
+$$0 = \sum_{i=1}^{n}y_i - \sum_{i=1}^{n}sx_i - \sum_{i=1}^{n}b.$$
+
 
 Since '$b$' and '$s$' are independent of $i$:
-$$ \sum_{i=1}^{n}b = nb, \sum_{i=1}^{n}sX_i = s\sum_{i=1}^{n}X_i$$
 
-Therefore:
-$$b = \frac{\sum_{i=1}^{n}Y_i - s\sum_{i=1}^{n}X_i}{n}$$
+$$0 = \sum_{i=1}^{n}y_i - \sum_{i=1}^{n}sx_i - bn,$$
+
+$$b = \frac{\sum_{i=1}^{n}y_i - s\sum_{i=1}^{n}x_i}{n}.$$
 
 Look at it more closely:
-$$b = \frac{\sum_{i=1}^{n}Y_i}{n} - s\frac{\sum_{i=1}^{n}X_i}{n}$$
+
+$$b = \frac{\sum_{i=1}^{n}y_i}{n} - s\frac{\sum_{i=1}^{n}x_i}{n}.$$
+
 And see the means in disguise:
+
 $$b = \bar{Y} - s\bar{X}$$
 
+Clarification: We define $Y$ as an  array of all $y_i$'s, and "$\bar{Y}$" just means the mean of all $y_i$'s. 
 Cool! But we still need to know the slope.
 
 ### Calculating s
 Let's start just like before, but with $s$ instead of $b$.
-$$0 = \frac{\partial \SSE}{\partial s}\left(\sum_{i=1}^{n}{(Y_i - sX_i - b)^2}\right)$$
+
+$$0 = \frac{\partial \SSE}{\partial s}\left(\sum_{i=1}^{n}{(y_i - sx_i - b)^2}\right).$$
 
 Using the chain rule, we get:
-$$0 = \sum_{i=1}^{n}{-2X_i(Y_i - sX_i - b)}$$
-$$0 = \sum_{i=1}^{n}{X_i(Y_i - sX_i - b)}$$
-Distributing $X_i$:
-$$0 = \sum_{i=1}^{n}{(Y_iX_i - sX_i^2 - bX_i)}$$
+
+$$0 = \sum_{i=1}^{n}{-2x_i(y_i - sx_i - b)},$$
+
+$$0 = \sum_{i=1}^{n}{x_i(y_i - sx_i - b)}.$$
+
+Distributing $x_i$:
+
+$$0 = \sum_{i=1}^{n}{(y_ix_i - sx_i^2 - bx_i)}$$
+
 Substituting $b$ for what we found above:
-$$0 = \sum_{i=1}^{n}{(Y_iX_i - sX_i^2 - (\bar{Y} - s\bar{X})X_i)}$$
 
-$$0 = \sum_{i=1}^{n}{(Y_iX_i - sX_i^2 - \bar{Y}X_i + s\bar{X}X_i)}$$
+$$0 = \sum_{i=1}^{n}{(y_ix_i - sx_i^2 - (\bar{Y} - s\bar{X})x_i)},$$
 
-$$0 = \sum_{i=1}^{n}{(X_iY_i - X_i\bar{Y}) - s\sum_{i=1}^{n}(X_i^2 - \bar{X}X_i)}$$
+$$0 = \sum_{i=1}^{n}{(y_ix_i - sx_i^2 - \bar{Y}x_i + s\bar{X}x_i)},$$
+
+$$0 = \sum_{i=1}^{n}{(x_iy_i - x_i\bar{Y}) - s\sum_{i=1}^{n}(x_i^2 - \bar{X}x_i)}.$$
 
 Finally:
-$$s = \frac{\sum_{i=1}^{n}(X_iY_i - X_i\bar{Y})}{\sum_{i=1}^{n}(X_i^2 - \bar{X}X_i)}$$
+
+$$s = \frac{\sum_{i=1}^{n}(x_iy_i - x_i\bar{Y})}{\sum_{i=1}^{n}(x_i^2 - \bar{X}x_i)}.$$
+
+And we've come to know the line that produces the least error! Remember, finding out the slope also lets us know of what the intercept (b) is.
+
+Again, don't worry if you weren't able to follow all that math. There's no need; all you need to realize is that the result now allows us to plot *the best* fitting line to the dots!
+
+<div id="linregress2"></div>
+<script src="/assets/js/linregress2.js"></script>
+<div align="center"><i>Here you can see how well the calculus-driven line does.<br>And you can see how well you can eyeball it, comparatively.<br>
+Oh, also, try plotting your own graph by dragging your mouse or finger!</i></div>
+
 
 # Pythonification
+Even if we know how to compute the best line possible, there are slower and faster ways of doing it.
 
+Here's a sneek peek:
 ```python
 from matplotlib import pyplot as plt
 import numpy as np
@@ -193,8 +249,3 @@ slope, intercept, *rest = stats.linregress(X, Y)
 Well... That `*rest` contains the results of some other useful calculations like the correlation coefficient, which we didn't calculate at all. So, no wonder **SciPy** took more time!
 
 **Nonetheless,** our function performed comparably to that of **SciPy.** I'll definitely take that as a success!
-
-# Footer
-## Some details
-* This is for linear regression with a single independent variable.
-  * The rationale behind linear regression models with multiple variables is pretty much the same. The math turns out to be a bit more complex with the added "dimensions."
