@@ -77,7 +77,7 @@ But before we do all that, have a go below, try to fit a line by eyeballing it a
 
 <div id="linregress1"></div>
 <script src="/assets/js/linregress1.js"></script>
-<div align=center><i>The left-hand handle modifies the intercept, the right-hand one modifies the slope.</i></div>
+<div align="center"><i>The left-hand handle modifies the intercept, the right-hand one modifies the slope.</i></div>
 
 # Finding the Best Fit
 
@@ -179,30 +179,22 @@ Again, don't worry if you weren't able to follow all that math. There's no need;
 <div id="linregress2"></div>
 <script src="/assets/js/linregress2.js"></script>
 <div align="center"><i>Here you can see how well the calculus-driven line does.<br>And you can see how well you can eyeball it, comparatively.<br>
-Oh, also, try plotting your own graph by dragging your mouse or finger!</i></div>
+Oh, also, try plotting your own graph by dragging your mouse (or finger)!</i></div>
 
 
 # Pythonification
-Even if we know how to compute the best line possible, there are slower and faster ways of doing it.
+In case you're wondering how to turn all of this into a computer program in Python. Here's how you'd do it. It's pretty neat to see all of what we've said above boils down to a few lines of code! And it comes up with the best possible line. Every time!
 
-Here's a sneek peek:
 ```python
 from matplotlib import pyplot as plt
 import numpy as np
+
 def linear_regression(X,Y):
     Y_bar, X_bar = Y.mean(), X.mean()
     s = ((np.dot(X,Y) - np.dot(X, np.full(len(Y), Y_bar)))
         /(np.dot(X,X) - np.dot(X, np.full(len(Y), X_bar))))
     b = Y_bar - s*X_bar
     return s, b
-
-Y = np.array([2,5,4,10,5,6,8,15,2])
-X = np.arange(1, len(Y)+1)
-
-s, b = linear_regression(X,Y)
-Y_hat = X*s + b
-plt.plot(X,Y_hat)
-plt.scatter(X, Y)
 ```
 
 ## What does this look like in **SciPy**?
@@ -219,10 +211,12 @@ Scipy: 	 0.5666666666666669 	 3.4999999999999987
 My func: 0.5666666666666667 	 3.5
 ```
 They do... Cool!
+
 ## How about a race?
 Let's race the two implementations of linear regression calculations!
 ```python
 from time import time
+#Have numpy create 2 arrays that are 1 million long, each.
 x = np.random.random(1000000)
 y = np.random.random(1000000)
 tic = time()
@@ -236,7 +230,7 @@ toc = time()
 print(f"Our func took: \t{(toc-tic)*1000}ms")
 ```
 ```
-Scipy took: 	33.461809158325195ms
+Scipy took: 	21.461809158325195ms
 Our func took: 	9.068489074707031ms
 ```
 ### **Whoa!!!**

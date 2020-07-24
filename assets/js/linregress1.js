@@ -199,12 +199,14 @@ var userLine = svg.append("line")
 var userLineVerticalDragger = svg.append("circle")
   .attr("transform", "translate(" + 0 + "," + height/2 + ")")
   .attr("class", "draggable_button")
+  .attr("r", "6")
   .call(lineDrag);
 
 var userLineRotator = svg.append("circle")
   .attr("transform", "translate(" + width*.95 + "," + height/2 + ")")
   .attr("class", "draggable_button")
   .attr("id", "user_line_r")
+  .attr("r", "6")
   .call(lineRotate);
 
 
