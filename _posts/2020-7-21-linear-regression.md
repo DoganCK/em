@@ -1,18 +1,17 @@
 ---
 layout: post
 title:  "Linear Regression"
-categories: mathematics statistics
-
+tags: mathematics statistics linear-regression python numpy scipy loss-function 
+      cost-function fit best-fit animation animated interaction interactive
+      elusive meditations
 ---
 
-
-Fitting a line to data
 
 <script src="https://d3js.org/d3.v5.min.js"></script>
 <script src="https://unpkg.com/mathjs@7.0.2/dist/math.min.js"></script>
 <div id="linregress"></div>
 <script src="/assets/js/linregress0.js"></script>
-Go ahead and try to fit a line!
+<div align="center"><i>Go ahead and try to fit a line!</i></div>
 
 ## Motivation
 Looking at the graph above, we see some dots representing data points, two, rather terse, axes, and a line that seems to go across all the dots. 
@@ -93,13 +92,15 @@ Sometimes, though, there is the option for just finding *the* best fitting line.
 ## A small note, going forward
 The following will be focused on finding the *best* line for a given set of dots. It turns out that trying to minimize $\RMSE$ and $\SSE$ are the same. So I'll minimize $\SSE$ in what follows for simplicity.
 
-*(If you  can't follow the calculus bits below, don't worry at all. Just skip to the end of this section where you'll see a graph where you can compare the line that you fitted to the absolute best one.)*
+*(If you  can't follow the calculus bits below, don't worry at all. Just skip to the end of this section where you'll see a graph in which you can compare the line that you fitted to the absolute best one.)*
 
 ## Calculus to the rescue
 We want the line with the least sum of squared errors. In order to do that, we need to find out when the derivative of $\SSE$ equals 0, in other words, when the $\SSE$ hits a local *minimum*.
 
-Reminder for $\SSE$:  
+Remember:
+
 $$\SSE = \sum_{i=1}^{n}{(y_i - \hat{y}_i)^2}$$
+
 It turns out this is actually a pretty general formula for finding the SSE not just of linear models but all sorts of models. Since we're fitting a linear model, we can be a little bit more specific than this to go ahead with our calculations.  
 In particular, since we are fitting a *line* to the whole dataset, we know that for any $\hat{y}_i$,  
 $$\hat{y}_i = sx_i + b$$
@@ -138,11 +139,12 @@ Look at it more closely:
 
 $$b = \frac{\sum_{i=1}^{n}y_i}{n} - s\frac{\sum_{i=1}^{n}x_i}{n}.$$
 
-And see the means in disguise:
+And see the *means* in disguise:
 
-$$b = \bar{Y} - s\bar{X}$$
+$$b = \bar{Y} - s\bar{X}.$$
 
-Clarification: We define $Y$ as an  array of all $y_i$'s, and "$\bar{Y}$" just means the mean of all $y_i$'s. 
+Clarification: We define $Y$ as an  array of all $y_i$'s, and "$\bar{Y}$" (read "y bar") just means the mean of all $y_i$'s. 
+
 Cool! But we still need to know the slope.
 
 ### Calculating s
@@ -174,12 +176,12 @@ $$s = \frac{\sum_{i=1}^{n}(x_iy_i - x_i\bar{Y})}{\sum_{i=1}^{n}(x_i^2 - \bar{X}x
 
 And we've come to know the line that produces the least error! Remember, finding out the slope also lets us know of what the intercept (b) is.
 
-Again, don't worry if you weren't able to follow all that math. There's no need; all you need to realize is that the result now allows us to plot *the best* fitting line to the dots!
+Again, don't worry if you weren't able to follow all that math. There's no need; all you need to realize is that the result now allows us to plot *the best* fitting line across the dots!
 
 <div id="linregress2"></div>
 <script src="/assets/js/linregress2.js"></script>
 <div align="center"><i>Here you can see how well the calculus-driven line does.<br>And you can see how well you can eyeball it, comparatively.<br>
-Oh, also, try plotting your own graph by dragging your mouse (or finger)!</i></div>
+Oh, you can also try plotting your own graph by dragging your mouse (or finger)!</i></div>
 
 
 # Pythonification
@@ -216,7 +218,7 @@ They do... Cool!
 Let's race the two implementations of linear regression calculations!
 ```python
 from time import time
-#Have numpy create 2 arrays that are 1 million long, each.
+# Have numpy create 2 arrays that are 1 million long, each.
 x = np.random.random(1000000)
 y = np.random.random(1000000)
 tic = time()
