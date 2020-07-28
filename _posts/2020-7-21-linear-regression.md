@@ -22,7 +22,7 @@ Looking at the graph above, we see some dots representing data points, two, rath
 
 We see this sort of graph all the time. For instance, house prices increase as square-footage increases. Gas consumption increases as we drive more, and so on. But these relationships are never perfect in the real world.
 
-The dots are scattered around like because the data we collect is a function of a plethora of other factors. Take the house prices. They are, indeed, affected by square-footage. But not only that! They are also affected by, for example, the proximity to a beach, how good neighboring schools are, how safe the neighborhood is, and maybe, even, how good of a bargainer the buyer is. And so on, and so forth. That is *noise*. Sometimes, we just want to find out the relationship between square-footage and price to guess the price of a house based on its square-footage.
+The dots are scattered around like because the data we collect is a function of a plethora of other factors. Take house prices. They are, indeed, affected by square-footage. But not only that! They are also affected by, for example, the proximity to a beach, how good neighboring schools are, how safe the neighborhood is, and maybe, even, how good of a bargainer the buyer is. And so on, and so forth. That is *noise*. Sometimes, we just want to find out the relationship between square-footage and price to guess the price of a house based on its square-footage.
 
 How do we do that? Simple. We fit a line across the dots, like the one above.
 
