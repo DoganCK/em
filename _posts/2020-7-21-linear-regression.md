@@ -4,6 +4,9 @@ title:  "Linear Regression"
 tags: mathematics statistics linear-regression python numpy scipy loss-function 
       cost-function fit best-fit animation animated interaction interactive
       elusive meditations
+description: How do we determine what line best represents a big chunk of data?
+             One of the tenets of statistics, linear regression,
+             explained through interactive animations.
 ---
 
 
@@ -11,7 +14,7 @@ tags: mathematics statistics linear-regression python numpy scipy loss-function
 <script src="https://unpkg.com/mathjs@7.0.2/dist/math.min.js"></script>
 <div id="linregress"></div>
 <script src="/assets/js/linregress0.js"></script>
-<div align="center"><i>Go ahead and try to fit a line!</i></div>
+<div align="center"><i>Go ahead and try drawing your own graph!</i></div>
 
 ## Motivation
 Looking at the graph above, we see some dots representing data points, two, rather terse, axes, and a line that seems to go across all the dots. 
