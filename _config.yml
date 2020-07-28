@@ -35,6 +35,8 @@ plugins:
   - jekyll-seo-tag
   - jekyll-sitemap
 
+google_analytics: UA-173533313-1
+
 # Exclude from processing.
 # The following items will not be processed, by default.
 # Any item listed under the `exclude:` key here will be automatically added to
