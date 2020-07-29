@@ -7,6 +7,7 @@ tags: mathematics statistics linear-regression python numpy scipy loss-function
 description: How do we determine what line best represents a big chunk of data?
              One of the tenets of statistics, linear regression,
              explained through interactive animations.
+image: /assets/img/linear_regression_card.png
 ---
 
 
