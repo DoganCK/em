@@ -24,7 +24,7 @@ description: >- # this means to ignore newlines until "baseurl:"
   An environment for learning about the unintuitive through interaction,
   animation, and meditation.
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://www.elusivemeditations.com/" # the base hostname & protocol for your site, e.g. http://example.com
 permalink: /:title/
 twitter_username: doganck
 github_username:  doganck
