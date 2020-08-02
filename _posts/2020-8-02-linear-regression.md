@@ -13,8 +13,7 @@ image: /assets/img/linear_regression_card.png
 
 <script src="https://d3js.org/d3.v5.min.js"></script>
 <script src="https://unpkg.com/mathjs@7.0.2/dist/math.min.js"></script>
-<div id="linregress"></div>
-<script src="/assets/js/linregress0.js"></script>
+<div id="linregress0"></div>
 <div align="center"><i>Go ahead and try drawing your own graph!</i></div>
 
 ## Motivation
@@ -23,7 +22,7 @@ Looking at the graph above, we see some dots representing data points, two, rath
 
 We see this sort of graph all the time. For instance, house prices increase as square-footage increases. Gas consumption increases as we drive more, and so on. But these relationships are never perfect in the real world.
 
-The dots are scattered around like because the data we collect is a function of a plethora of other factors. Take house prices. They are, indeed, affected by square-footage. But not only that! They are also affected by, for example, the proximity to a beach, how good neighboring schools are, how safe the neighborhood is, and maybe, even, how good of a bargainer the buyer is. And so on, and so forth. That is *noise*. Sometimes, we just want to find out the relationship between square-footage and price to guess the price of a house based on its square-footage.
+The dots are scattered around like because the data we collect is a function of a plethora of other factors. Take house prices. They are, indeed, affected by square-footage. But not only that! They are also affected by, for example, the proximity to a beach, how good neighboring schools are, how safe the neighborhood is, and maybe, even, how good of a bargainer the buyer is. And so forth. That is *noise*. Sometimes, we just want to find out the relationship between square-footage and price to guess the price of a house based on its square footage.
 
 How do we do that? Simple. We fit a line across the dots, like the one above.
 
@@ -31,22 +30,22 @@ How do we "fit" a line across?
 1. We could eyeball it. 
 2. We could calculate, somehow, how well a certain line fits a certain set of dots. 
 
-Now, the first option seems much easier. And in my experience, humans can eyeball a linear fit pretty well. In fact, at the end of the next section you'll be able to test your skills, as well.
+Now, the first option seems much easier. And in my experience, humans can eyeball a linear fit pretty well. In fact, at the end of the next section, you'll be able to test your skills, as well.
 
-But this approach has some drawbacks. First of all, how do we tell your eyeballing is better than mine? Also, what if we want to get really precise. And, perhaps most pressingly, what happens if we need to fit bazillions lines to different sets of dots. No one would want to eyeball each one of them!
+But this approach has some drawbacks. First of all, how do we tell that our eyeballing is better than mine? Also, what if we wanted to get really precise. And, perhaps most pressingly, what would happen if we needed to fit bazillions lines to different sets of dots. No one would want to eyeball each one of them!
 
 The second option has some extra perks, too. There is a fairly simple rationale behind it and the concepts introduced play fundamental roles in all data analysis, including cutting edge machine learning. So, having an intuitive understanding of these concepts helps.
 
 But, the most important perk of the second option? The result is frickin' beautiful! Let's get to it.
 
 # Setup
-First order of business: I've talked about *how well* a line fits a set of dots. Let's talk about what 'how well' means in this context. In other words, let's talk about the error a line produces given a certain set of dots.
+The first order of business: I've talked about *how well* a line fits a set of dots. Let's talk about what 'how well' means in this context. In other words, let's talk about the error a line produces given a certain set of dots.
 ## Measuring Error
 What is error? Here's a good measure: the difference between the actual house price, $y$, and the estimated price according to the fitted line, $\hat{y}$.
 
 $$Error:=y - \hat{y}.$$
 
-Great, we have calculated the error for a single point; it's just the verical distance between the fitted line and the actual dot.
+Great, we have calculated the error for a single point; it's just the vertical distance between the fitted line and the actual dot.
 <!-- TODO: I need an image to right showing the difference, here -->
 In what follows, we're going to work on extrapolating this idea for a single point to the whole data set.
 ## Squared Error
@@ -57,7 +56,7 @@ That needs to be fixed. And, we could do a couple of things here, one of which, 
 $$Squred Error := (y-\hat{y})^2$$
 
 ## Sum of Squared Error (SSE)
-Now we can sum all the squared errors without worrying about errors cancelling each other out.
+Now we can sum all the squared errors without worrying about errors canceling each other out.
  
 $\newcommand\SSE{\mathit{SSE}}$
 
@@ -68,18 +67,17 @@ This is already a pretty good measure of how good the fit is; much better than w
 It's worth tweaking a little bit more, though.
 
 ## Root Mean Squared Error
-Since we squared all the errors in the last step and took their sum, we've blown things out of proportion a little bit. Moreover, the unit of error is also the square of the unit of the original measurement of the dependent variable, so there's a mismatch there. We can fix these things by calculating the mean error and taking the sqaure root of it.
+Since we squared all the errors in the last step and took their sum, we've blown things out of proportion a little bit. Moreover, the unit of error is also the square of the unit of the original measurement of the dependent variable, so there's a mismatch there. We can fix these things by calculating the mean error and taking the square root of it.
 
 $\newcommand\RMSE{\mathit{RMSE}}$
 
 $$\RMSE = \sqrt{\frac{\SSE}{n}}$$
 
-Okay, so in this setup section we've come up with a rigorous way of evaluating fitness of a line for some dots. I want you to note that the most crucial step that we've taken here is the first one where we defined error as the vertical distance between the actual data and the fitted line. The rest is housekeeping. Next, we're going to try to find the *best* possible line that fits a set of dots.
+Okay, so in this setup section we've come up with a rigorous way of evaluating the fitness of a line for some dots. I want you to note that the most crucial step that we've taken here is the first one where we defined error as the vertical distance between the actual data and the fitted line. The rest is housekeeping. Next, we're going to try to find the *best* possible line that fits a set of dots.
 
-But before we do all that, have a go below, try to fit a line by eyeballing it and then by paying attention to the computed values that we just defined.
+But before we do all that, have a go below, try to fit a line by eyeballing it, and then by paying attention to the computed values that we just defined.
 
 <div id="linregress1"></div>
-<script src="/assets/js/linregress1.js"></script>
 <div align="center"><i>The left-hand handle modifies the intercept, the right-hand one modifies the slope.</i></div>
 
 # Finding the Best Fit
@@ -89,14 +87,14 @@ The least the error, the best the fit.*
 
 There are two fundamentally different ways of finding the line that fits the dots--as outlined above. One is applying brute force. We know how to calculate how good a fit our line is. We can get the computer to try thousands of different lines (using clever techniques) to get as good a fit as we can get. This is tantamount to *tweaking* in some sense. And it's exactly what you did if you tried to fit a line to the graph above. And it's fine. In fact, it's what machine learning is: clever tweaks at a *very* large scale!
 
-Sometimes, though, there is the option for just finding *the* best fitting line.
+Sometimes, though, there is the option for just finding *the* best-fitting line.
 
 *"The"?* Not always an option, but we can, in this case, compute the best fitting line thanks to the magic of calculus.
 
 ## A small note, going forward
 The following will be focused on finding the *best* line for a given set of dots. It turns out that trying to minimize $\RMSE$ and $\SSE$ are the same. So I'll minimize $\SSE$ in what follows for simplicity.
 
-*(If you  can't follow the calculus bits below, don't worry at all. Just skip to the end of this section where you'll see a graph in which you can compare the line that you fitted to the absolute best one.)*
+*(If you can't follow the calculus bits below, don't worry at all. Just skip to the end of this section where you'll see a graph in which you can compare the line that you fitted to the absolute best one.)*
 
 ## Calculus to the rescue
 We want the line with the least sum of squared errors. In order to do that, we need to find out when the derivative of $\SSE$ equals 0, in other words, when the $\SSE$ hits a local *minimum*.
@@ -109,7 +107,7 @@ It turns out this is actually a pretty general formula for finding the SSE not j
 In particular, since we are fitting a *line* to the whole dataset, we know that for any $\hat{y}_i$,  
 $$\hat{y}_i = sx_i + b$$
 
-After the corresponding substituion, we get:
+After the corresponding substitution, we get:
 
 $$\SSE = \sum_{i=1}^{n}{(y_i - sx_i - b)^2}$$
 
@@ -147,7 +145,7 @@ And see the *means* in disguise:
 
 $$b = \bar{Y} - s\bar{X}.$$
 
-Clarification: We define $Y$ as an  array of all $y_i$'s, and "$\bar{Y}$" (read "y bar") just means the mean of all $y_i$'s. 
+Clarification: We define $Y$ as an array of all $y_i$'s, and "$\bar{Y}$" (read "y bar") just means the mean of all $y_i$'s. 
 
 Cool! But we still need to know the slope.
 
@@ -178,12 +176,11 @@ Finally:
 
 $$s = \frac{\sum_{i=1}^{n}(x_iy_i - x_i\bar{Y})}{\sum_{i=1}^{n}(x_i^2 - \bar{X}x_i)}.$$
 
-And we've come to know the line that produces the least error! Remember, finding out the slope also lets us know of what the intercept (b) is.
+And we've come to know the line that produces the least error! Remember, finding out the slope also lets us know what the intercept (b) is.
 
 Again, don't worry if you weren't able to follow all that math. There's no need; all you need to realize is that the result now allows us to plot *the best* fitting line across the dots!
 
 <div id="linregress2"></div>
-<script src="/assets/js/linregress2.js"></script>
 <div align="center"><i>Here you can see how well the calculus-driven line does.<br>And you can see how well you can eyeball it, comparatively.<br>
 Oh, you can also try plotting your own graph by dragging your mouse (or finger)!</i></div>
 
@@ -249,3 +246,4 @@ slope, intercept, *rest = stats.linregress(X, Y)
 Well... That `*rest` contains the results of some other useful calculations like the correlation coefficient, which we didn't calculate at all. So, no wonder **SciPy** took more time!
 
 **Nonetheless,** our function performed comparably to that of **SciPy.** I'll definitely take that as a success!
+<script src="/assets/js/linregress.js"></script>
