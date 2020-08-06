@@ -22,7 +22,7 @@ Looking at the graph above, we see some dots representing data points, two, rath
 
 We see this sort of graph all the time. For instance, house prices increase as square-footage increases. Gas consumption increases as we drive more, and so on. But these relationships are never perfect in the real world.
 
-The dots are scattered around like because the data we collect is a function of a plethora of other factors. Take house prices. They are, indeed, affected by square-footage. But not only that! They are also affected by, for example, the proximity to a beach, how good neighboring schools are, how safe the neighborhood is, and maybe, even, how good of a bargainer the buyer is. And so forth. That is *noise*. Sometimes, we just want to find out the relationship between square-footage and price to guess the price of a house based on its square footage.
+The dots are scattered around because the data we collect is a function of a plethora of other factors. Take house prices. They are, indeed, affected by square-footage. But not only that! They are also affected by, for example, the proximity to a beach, how good neighboring schools are, how safe the neighborhood is, and maybe, even, how good of a bargainer the buyer is. And so forth. That is *noise*. Sometimes, we just want to find out the relationship between square-footage and price to guess the price of a house based on its square footage.
 
 How do we do that? Simple. We fit a line across the dots, like the one above.
 
@@ -32,7 +32,7 @@ How do we "fit" a line across?
 
 Now, the first option seems much easier. And in my experience, humans can eyeball a linear fit pretty well. In fact, at the end of the next section, you'll be able to test your skills, as well.
 
-But this approach has some drawbacks. First of all, how do we tell that our eyeballing is better than mine? Also, what if we wanted to get really precise. And, perhaps most pressingly, what would happen if we needed to fit bazillions lines to different sets of dots. No one would want to eyeball each one of them!
+But this approach has some drawbacks. First of all, how can we tell that your eyeballing is better than mine? Also, what if we wanted to get really precise. And, perhaps most pressingly, what would happen if we needed to fit bazillions of lines to a bazillion different sets of dots. No one would want to eyeball each one of them!
 
 The second option has some extra perks, too. There is a fairly simple rationale behind it and the concepts introduced play fundamental roles in all data analysis, including cutting edge machine learning. So, having an intuitive understanding of these concepts helps.
 
