@@ -315,11 +315,12 @@ class Table1 extends Scene1{
     for(let i=s3+1; i<13; i++){
       this.svg
         .append("rect")
+        .attr("class", "unavailable")
         .attr("x", 5+i*50)
         .attr("y", "15")
         .attr("width", 30)
         .attr("height", 10)
-        .style("fill", "555")
+        
 
     }
   }
