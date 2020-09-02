@@ -3,6 +3,7 @@ layout: post
 title:  "Einstein and Candies"
 tags: mathematics statistics probability Albert Einstein Satyendra Nath Bose stars and bars
 description: How do we count the ways in which indistinguishable objects of a kind can be categorized? Einstein would like to know!
+excerpt: How do we count the ways in which indistinguishable objects of a kind can be categorized? Einstein would like to know!
 image: /assets/img/einstein-candy_card.png
 ---
 Let's talk about a really interesting candy distribution problem&mdash;you know I mean business when I say 'candy distribution'! It's a well-known problem that has important implications for physics, hence the name 'Einstein' in the title. In a nutshell, [Satyendra Nath Bose](https://en.wikipedia.org/wiki/Satyendra_Nath_Bose) and [Einstein](https://en.wikipedia.org/wiki/Albert_Einstein) wanted to devise a [statistics](https://en.wikipedia.org/wiki/Bose%E2%80%93Einstein_statistics) where they could count the ways non-interacting and indistinguishable particles could be categorized according to their energy-states. This led them to theorize the existence of a special (solider than solid, shall we say) state of matter, called [Bose-Einstein condensate](https://en.wikipedia.org/wiki/Bose%E2%80%93Einstein_condensate).
