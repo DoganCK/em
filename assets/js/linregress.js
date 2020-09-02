@@ -235,6 +235,10 @@ class CostGraph extends ScatterGraph{
       .text("-")
       .attr("x", this.error_info_pos.x+100 + this.error_info_col_dist+10)
       .attr("y", this.error_info_pos.y);
+    this.lineDrag = d3.drag()
+      .on('start', null)
+      .on('drag', this.lineDragging.bind(this))
+      .on('end', this.lineDragEnd.bind(this))
     this.addUserInteractable()
   }
   addUserInteractable(){
@@ -251,11 +255,16 @@ class CostGraph extends ScatterGraph{
       .attr("class", "draggable_button")
       .attr("r", "6")
       .call(this.lineDrag);
+    this.lineRotate = d3.drag()
+      .on('start', null)
+      .on('drag', this.lineRotating.bind(this))
+      .on('end', this.lineRotateEnd.bind(this))
     this.userLineRotator = this.svg.append("circle")
       .attr("class", "draggable_button")
       .attr("id", "user_line_r")
       .attr("r", "6")
       .call(this.lineRotate);
+    
 
     this.updateUserInteractable(p1,p2)
   }
@@ -275,27 +284,26 @@ class CostGraph extends ScatterGraph{
       .style("cursor", "grabbing")
     this.update(p1,p2)
   }
-  lineRotate = d3.drag()
-    .on('start', null)
-    .on('drag', function(d){
-      let dx = d3.event.dx
-      let dy = d3.event.dy
-      let p1 = {x:null, y:null}
-      let p2 = {x:null, y:null}
-      p1.x = parseFloat(this.userLineSegment.attr('x1'))
-      p1.y = parseFloat(this.userLineSegment.attr('y1'))
-      p2.x = parseFloat(this.userLineSegment.attr('x2')) + dx;
-      p2.y = parseFloat(this.userLineSegment.attr('y2'))+ dy;
-      p1 = this.cPos("v", p1)
-      p2 = this.cPos("v", p2)
-      this.update(p1,p2)
-      this.userLineRotator
-        .style("cursor", "grabbing")
-      // userLineCompute();
-      }.bind(this)).on('end', function(){
-        this.userLineRotator
+  
+  lineRotating(){
+    let dx = d3.event.dx
+    let dy = d3.event.dy
+    let p1 = {x:null, y:null}
+    let p2 = {x:null, y:null}
+    p1.x = parseFloat(this.userLineSegment.attr('x1'))
+    p1.y = parseFloat(this.userLineSegment.attr('y1'))
+    p2.x = parseFloat(this.userLineSegment.attr('x2')) + dx;
+    p2.y = parseFloat(this.userLineSegment.attr('y2'))+ dy;
+    p1 = this.cPos("v", p1)
+    p2 = this.cPos("v", p2)
+    this.update(p1,p2)
+    this.userLineRotator
+      .style("cursor", "grabbing")
+  }
+  lineRotateEnd(){
+    this.userLineRotator
           .style("cursor", "grab")
-    }.bind(this));
+  }
   update(p1, p2){
     this.updateUserInteractable(p1,p2)
     this.updateErrors(p1,p2)
@@ -332,11 +340,6 @@ class CostGraph extends ScatterGraph{
       .attr("cy", p2.v.y)
       .attr("class", "draggable_button")
   }
-  lineDrag = d3.drag()
-    .on('start', null)
-    .on('drag', this.lineDragging.bind(this))
-    .on('end', this.lineDragEnd.bind(this))
-
   lineDragEnd(){
     this.userLineVerticalDragger
       .style("cursor", "grab")
