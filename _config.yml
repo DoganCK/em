@@ -28,7 +28,7 @@ url: "https://www.elusivemeditations.com" # the base hostname & protocol for you
 permalink: /:title/
 twitter_username: doganck
 github_username:  doganck
-
+show_excerpts: True
 # Build settings
 gems:
   - jekyll-feed

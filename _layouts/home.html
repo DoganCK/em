@@ -1,34 +1,21 @@
 ---
+title: Blog
 layout: default
+permalink: /blog
 ---
-
-<div class="home">
-  {%- if page.title -%}
-    <h1 class="page-heading">{{ page.title }}</h1>
-  {%- endif -%}
-
-  {{ content }}
-
-  {%- if site.posts.size > 0 -%}
-    <h2 class="post-list-heading">{{ page.list_title | default: "Posts" }}</h2>
-    <ul class="post-list">
-      {%- for post in site.posts -%}
-      <li>
-        {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
-        <span class="post-meta">{{ post.date | date: date_format }}</span>
-        <h3>
-          <a class="post-link" href="{{ post.url | relative_url }}">
-            {{ post.title | escape }}
-          </a>
-        </h3>
-        {%- if site.show_excerpts -%}
-          {{ post.excerpt }}
-        {%- endif -%}
-      </li>
-      {%- endfor -%}
-    </ul>
-
-    <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | relative_url }}">via RSS</a></p>
-  {%- endif -%}
-
+<div class="card-grid-container">
+    {% for post in site.posts %}
+    <div class="card-grid-item">
+        <div class="card">
+            <div class="card-image-bay">
+                <a href="{{ post.url }}"><img class="card-image" src="{{ post.image }}" alt=""/></a>
+            </div>
+            <div class="card-content">
+                <h5 class="card-title">{{ post.title }}</h5>
+                <p class="card-subtitle">{{ post.date | date: "%B %d, %Y" }}</p>
+                <p class="card-actions"><a class="card-btn" href="{{ post.url }}">{{ post.description | truncatewords: 30, '...' }}</a></p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
 </div>
