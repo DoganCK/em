@@ -47,7 +47,6 @@ Link to privacy policy of third party service providers used by our Services:
 [Google Analytics for Firebase](https://firebase.google.com/policies/analytics)  
 [Firebase Crashlytics](https://firebase.google.com/support/privacy/)  
 [Facebook](https://www.facebook.com/about/privacy/update/printable)  
-[Expo](https://expo.io/privacy)  
 
 ## 2. How We Collect Information about You
 When you play one of our games, Elusive Meditations collects and stores certain personal information and non-personal information that you provide directly or through third party sources that is offering our game(s); In addition, your web browser or client software may transmit certain geographic information or information regarding your computer (capabilities, game data processing, etc.) to Elusive Meditations. Certain information regarding your game play, such as a timestamp of your last game played and your game progressions, will be collected from you and/or automatically generated based upon your use of our game services.
