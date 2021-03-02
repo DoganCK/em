@@ -10,9 +10,9 @@ image: /assets/img/zyzzer-feature.png
 ## Description
 Zyzzer is a fun and engaging way to learn times tables. It allows learners like you from all over the world to compete against each other. To do so, you not only need to do the multiplications in your head but also pay close attention to what your opponent is doing. If you are quick and catch them make a mistake, you can press the Zyzzer and they will have to pay a penalty!
 ## Screen Captures
-<img src="/assets/img/zyzzer-0.9.17/cap1.jpg" alt="Screen capture #1" width="200"/>
-<img src="/assets/img/zyzzer-0.9.17/cap2.jpg" alt="Screen capture #1" width="200"/>
-<img src="/assets/img/zyzzer-0.9.17/cap3.jpg" alt="Screen capture #1" width="200"/>
+<img src="/assets/img/zyzzer-0.9.17/cap1.png" alt="Screen capture #1" width="200"/>
+<img src="/assets/img/zyzzer-0.9.17/cap2.png" alt="Screen capture #1" width="200"/>
+<img src="/assets/img/zyzzer-0.9.17/cap3.png" alt="Screen capture #1" width="200"/>
 
 
 ## Join Beta-Testing 
